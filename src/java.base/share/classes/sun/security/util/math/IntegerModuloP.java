@@ -163,7 +163,20 @@ public interface IntegerModuloP {
         //    might be zero (infinity). However, since the infinity
         //    is represented as (0, 0) in 2D, it's OK returning 0 as
         //    the inverse of 0, i.e. (1, 1, 0) == (1/0, 1/0) == (0, 0).
-        return pow(getField().getSize().subtract(BigInteger.valueOf(2)));
+        BigInteger modulus = getField().getSize();
+        ImmutableIntegerModuloP result;
+//        long startTime = System.nanoTime();
+        if (BigInteger.debugMode == 1) {
+            result =  getField().getElement(asBigInteger().modInverse(modulus));
+        } else if (BigInteger.debugMode == 2) {
+            result = getField().getElement(asBigInteger().modPow(modulus.subtract(BigInteger.TWO), modulus));
+        } else {
+            result = pow(modulus.subtract(BigInteger.TWO));
+        }
+//        long endTime = System.nanoTime();
+//        System.out.println("Time in multiplicativeInverse called from " + Thread.currentThread().getStackTrace()[2].getClassName()  + " : " + (endTime - startTime) / 1000 + " usecs) = ");
+
+        return result;
     }
 
     /**

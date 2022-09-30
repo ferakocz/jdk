@@ -266,6 +266,6 @@ public class XECOperations {
         cswap(swap, z_2, z_3);
 
         // return (x_2 * z_2^(p - 2))
-        return x_2.setProduct(z_2.multiplicativeInverse());
+        return x_2.setProduct(z_2.pow(z_2.getField().getSize().subtract(BigInteger.TWO)));
     }
 }
